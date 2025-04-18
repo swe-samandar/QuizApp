@@ -1,0 +1,367 @@
+/* Results Page Specific Styles */
+
+/* Result Header */
+.result-header {
+    margin: 40px 0 30px;
+}
+
+.result-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.breadcrumbs a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: var(--primary-color);
+}
+
+.breadcrumbs i {
+    font-size: 0.7rem;
+}
+
+/* Result Summary */
+.result-summary {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.test-meta {
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.score-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.score-circle {
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+
+.progress-ring-circle {
+    stroke: rgba(0, 0, 0, 0.1);
+}
+
+.progress-ring-circle-fill {
+    stroke: var(--primary-color);
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 1s ease;
+}
+
+.score-percent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.score-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 200px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.detail-label {
+    font-weight: 500;
+}
+
+.detail-value {
+    font-weight: 700;
+}
+
+.correct .detail-value {
+    color: var(--success-color);
+}
+
+.incorrect .detail-value {
+    color: var(--error-color);
+}
+
+.skipped .detail-value {
+    color: var(--text-light);
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* Result Details */
+.result-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .result-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+.detail-section {
+    padding: 25px;
+}
+
+.detail-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+/* Performance Metrics */
+.performance-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.metric-item {
+    margin-bottom: 15px;
+}
+
+.metric-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.metric-label {
+    font-weight: 500;
+}
+
+.metric-value {
+    font-weight: 600;
+}
+
+.metric-bar {
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.metric-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* Topic Analysis */
+.topic-analysis {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.topic-item {
+    margin-bottom: 10px;
+}
+
+.topic-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.topic-label {
+    font-weight: 500;
+}
+
+.topic-score {
+    font-weight: 600;
+}
+
+.topic-bar {
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.topic-fill {
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* Question Review */
+.question-review {
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.review-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-light);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background-color: rgba(108, 92, 231, 0.1);
+    color: var(--primary-color);
+}
+
+.tab-btn:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.question-item {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.question-number {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.question-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.question-status.incorrect {
+    background-color: rgba(214, 48, 49, 0.1);
+    color: var(--error-color);
+}
+
+.question-content {
+    line-height: 1.6;
+}
+
+.question-content p {
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.answer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.option-letter {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.option.selected {
+    background-color: rgba(214, 48, 49, 0.1);
+    border-left: 3px solid var(--error-color);
+}
+
+.option.correct {
+    background-color: rgba(0, 184, 148, 0.1);
+    border-left: 3px solid var(--success-color);
+}
+
+.explanation {
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.explanation h4 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+/* Final Actions */
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 576px) {
+    .result-actions {
+        flex-direction: column;
+    }
+}

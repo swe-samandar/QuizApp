@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %} Results {% endblock title %}
+    
+{% block content %}
+    <main class="container">
+        <section class="dashboard-header">
+            <h1>Welcome back, <span class="username">Alex</span>!</h1>
+            <p>Continue your learning journey or discover new tests.</p>
+        </section>
+
+        <section class="stats-cards">
+            <div class="stats-card glass-card">
+                <div class="stats-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>Completed Tests</h3>
+                    <span class="stats-value">12</span>
+                </div>
+            </div>
+            <div class="stats-card glass-card">
+                <div class="stats-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>Your Rank</h3>
+                    <span class="stats-value">#45</span>
+                </div>
+            </div>
+            <div class="stats-card glass-card">
+                <div class="stats-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>Average Score</h3>
+                    <span class="stats-value">87%</span>
+                </div>
+            </div>
+            <div class="stats-card glass-card">
+                <div class="stats-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>Current Streak</h3>
+                    <span class="stats-value">5 days</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-content">
+            <div class="content-left">
+                <div class="progress-section glass-card">
+                    <h2>Your Progress</h2>
+                    <div class="progress-container">
+                        <div class="progress-item">
+                            <h4>JavaScript Basics</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <span class="progress-percent">75%</span>
+                        </div>
+                        <div class="progress-item">
+                            <h4>Math Challenge</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                            <span class="progress-percent">60%</span>
+                        </div>
+                        <div class="progress-item">
+                            <h4>World Geography</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                            <span class="progress-percent">45%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-tests glass-card">
+                    <h2>Recent Tests</h2>
+                    <div class="test-list">
+                        <div class="test-item">
+                            <div class="test-info">
+                                <h4>JavaScript Basics</h4>
+                                <p>Completed 2 days ago</p>
+                            </div>
+                            <div class="test-score">
+                                <span class="score-badge">85%</span>
+                            </div>
+                        </div>
+                        <div class="test-item">
+                            <div class="test-info">
+                                <h4>Math Challenge</h4>
+                                <p>Completed 1 week ago</p>
+                            </div>
+                            <div class="test-score">
+                                <span class="score-badge">78%</span>
+                            </div>
+                        </div>
+                        <div class="test-item">
+                            <div class="test-info">
+                                <h4>World Geography</h4>
+                                <p>Completed 2 weeks ago</p>
+                            </div>
+                            <div class="test-score">
+                                <span class="score-badge">92%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-right">
+                <div class="recommended-tests glass-card">
+                    <h2>Recommended For You</h2>
+                    <div class="recommended-list">
+                        <div class="recommended-item">
+                            <div class="recommended-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="recommended-content">
+                                <h4>Advanced JavaScript</h4>
+                                <p>15 questions | 12 min</p>
+                                <button class="btn btn-outline btn-sm">Start</button>
+                            </div>
+                        </div>
+                        <div class="recommended-item">
+                            <div class="recommended-icon">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <div class="recommended-content">
+                                <h4>Science Quiz</h4>
+                                <p>20 questions | 15 min</p>
+                                <button class="btn btn-outline btn-sm">Start</button>
+                            </div>
+                        </div>
+                        <div class="recommended-item">
+                            <div class="recommended-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <div class="recommended-content">
+                                <h4>World History</h4>
+                                <p>25 questions | 20 min</p>
+                                <button class="btn btn-outline btn-sm">Start</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard glass-card">
+                    <h2>Top Learners</h2>
+                    <div class="leaderboard-list">
+                        <div class="leaderboard-item top">
+                            <span class="rank">1</span>
+                            <div class="user">
+                                <img src="assets/avatar1.png" alt="User 1">
+                                <span>Sarah Johnson</span>
+                            </div>
+                            <span class="points">1250 pts</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">2</span>
+                            <div class="user">
+                                <img src="assets/avatar2.png" alt="User 2">
+                                <span>Mike Chen</span>
+                            </div>
+                            <span class="points">1120 pts</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">3</span>
+                            <div class="user">
+                                <img src="assets/avatar3.png" alt="User 3">
+                                <span>Emma Wilson</span>
+                            </div>
+                            <span class="points">980 pts</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">4</span>
+                            <div class="user">
+                                <img src="assets/avatar4.png" alt="User 4">
+                                <span>David Kim</span>
+                            </div>
+                            <span class="points">870 pts</span>
+                        </div>
+                        <div class="leaderboard-item">
+                            <span class="rank">5</span>
+                            <div class="user">
+                                <img src="assets/avatar5.png" alt="User 5">
+                                <span>Lisa Rodriguez</span>
+                            </div>
+                            <span class="points">790 pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

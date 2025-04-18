@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Page Not Found {% endblock title %}
+
+{% block content %}
+    <main class="container">
+        <section class="not-found glass-card">
+            <div class="astronaut">
+                <img src="assets/astronaut.svg" alt="Astronaut">
+            </div>
+            <div class="not-found-content">
+                <h1>404</h1>
+                <h2>Lost in Space</h2>
+                <p>The page you're looking for doesn't exist or has been moved. Let's get you back home!</p>
+                <div class="not-found-actions">
+                    <a href="{% url 'main:index' %}" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Return Home
+                    </a>
+                    <a href="{% url 'users:dashboard' %}" class="btn btn-outline">
+                        <i class="fas fa-rocket"></i> Launch to Dashboard
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

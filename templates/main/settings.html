@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+
+{% block title %} Setiings {% endblock title %}
+
+{% block content %}
+    <main class="container">
+        <section class="settings-header">
+            <div class="breadcrumbs">
+                <a href="{% url 'users:dashboard' %}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Sozlamalar</span>
+            </div>
+            <h1>Hisob Sozlamalari</h1>
+            <p>Shaxsiy ma'lumotlaringiz va platforma sozlamalarini boshqaring</p>
+        </section>
+
+        <section class="settings-content">
+            <div class="settings-sidebar">
+                <div class="settings-menu glass-card">
+                    <a href="#account" class="menu-item active">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Hisob ma'lumotlari</span>
+                    </a>
+                    <a href="#security" class="menu-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Xavfsizlik</span>
+                    </a>
+                    <a href="#notifications" class="menu-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Bildirishnomalar</span>
+                    </a>
+                    <a href="#privacy" class="menu-item">
+                        <i class="fas fa-lock"></i>
+                        <span>Maxfiylik</span>
+                    </a>
+                    <a href="#preferences" class="menu-item">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Interfeys sozlamalari</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="settings-main">
+                <!-- Hisob ma'lumotlari bo'limi -->
+                <div class="settings-section glass-card active" id="account-section">
+                    <h2><i class="fas fa-user-cog"></i> Hisob ma'lumotlari</h2>
+                    
+                    <form class="settings-form">
+                        <div class="form-group">
+                            <label for="name">To'liq ism</label>
+                            <input type="text" id="name" value="Aliyev Alisher">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Elektron pochta</label>
+                            <input type="email" id="email" value="alisher@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="username">Foydalanuvchi nomi</label>
+                            <input type="text" id="username" value="alisher_aliyev">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bio">Bio</label>
+                            <textarea id="bio" rows="3">Dasturchi va test yechishni yaxshi ko'raman</textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline">Bekor qilish</button>
+                            <button type="submit" class="btn btn-primary">O'zgarishlarni saqlash</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Xavfsizlik bo'limi -->
+                <div class="settings-section glass-card" id="security-section">
+                    <h2><i class="fas fa-shield-alt"></i> Xavfsizlik</h2>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h3>Parolni o'zgartirish</h3>
+                            <p>Oxirgi marta 3 oy oldin o'zgartirilgan</p>
+                        </div>
+                        <button class="btn btn-outline" id="change-password">O'zgartirish</button>
+                    </div>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h3>Ikki bosqichli autentifikatsiya</h3>
+                            <p>Hozircha o'chirilgan</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <h3>Faol seanslar</h3>
+                            <p>3 ta faol qurilma</p>
+                        </div>
+                        <button class="btn btn-outline">Boshqarish</button>
+                    </div>
+                </div>
+
+                <!-- Bildirishnomalar bo'limi -->
+                <div class="settings-section glass-card" id="notifications-section">
+                    <h2><i class="fas fa-bell"></i> Bildirishnomalar</h2>
+                    
+                    <div class="notification-group">
+                        <h3>Elektron pochta orqali bildirishnomalar</h3>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Test natijalari</h4>
+                                <p>Test topshirganingizdan so'ng natijalar haqida xabar</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Yangiliklar va yangilanishlar</h4>
+                                <p>Platformadagi yangi xususiyatlar haqida xabarlar</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-group">
+                        <h3>Push-bildirishnomalar</h3>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Eslatmalar</h4>
+                                <p>Test topshirish uchun eslatmalar</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Maxfiylik bo'limi -->
+                <div class="settings-section glass-card" id="privacy-section">
+                    <h2><i class="fas fa-lock"></i> Maxfiylik</h2>
+                    
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <h3>Profil ko'rinishi</h3>
+                            <p>Kim sizning profilingizni ko'rishi mumkin</p>
+                        </div>
+                        <select class="privacy-select">
+                            <option value="public">Hamma (ochiq)</option>
+                            <option value="friends">Faqat do'stlar</option>
+                            <option value="private">Faqat men (yopiq)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <h3>Faollik holati</h3>
+                            <p>Kim sizning onlayn holatingizni ko'rishi mumkin</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <h3>Shaxsiy ma'lumotlar</h3>
+                            <p>Kim sizning shaxsiy ma'lumotlaringizni ko'rishi mumkin</p>
+                        </div>
+                        <select class="privacy-select">
+                            <option value="public">Hamma</option>
+                            <option value="friends" selected>Faqat do'stlar</option>
+                            <option value="private">Faqat men</option>
+                        </select>
+                    </div>
+                    
+                    <div class="privacy-item">
+                        <div class="privacy-info">
+                            <h3>Reyting jadvali</h3>
+                            <p>Reyting jadvalida profilimingizni ko'rsatish</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Interfeys sozlamalari bo'limi -->
+                <div class="settings-section glass-card" id="preferences-section">
+                    <h2><i class="fas fa-sliders-h"></i> Interfeys sozlamalari</h2>
+                    
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <h3>Til</h3>
+                            <p>Platforma ko'rinish tili</p>
+                        </div>
+                        <select class="preference-select">
+                            <option value="uz">O'zbekcha</option>
+                            <option value="en">English</option>
+                            <option value="ru">Русский</option>
+                        </select>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <h3>Mavzu</h3>
+                            <p>Platforma rang mavzusi</p>
+                        </div>
+                        <div class="theme-options">
+                            <button class="theme-option light active" data-theme="light">
+                                <i class="fas fa-sun"></i> Kun
+                            </button>
+                            <button class="theme-option dark" data-theme="dark">
+                                <i class="fas fa-moon"></i> Tun
+                            </button>
+                            <button class="theme-option auto" data-theme="auto">
+                                <i class="fas fa-adjust"></i> Avto
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <h3>Yorqinlik effekti</h3>
+                            <p>Kartalar uchun shisha effekti</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <h3>Animatsiyalar</h3>
+                            <p>Interfeys animatsiyalari</p>
+                        </div>
+                        <select class="preference-select">
+                            <option value="full">To'liq</option>
+                            <option value="reduced">Qisqartirilgan</option>
+                            <option value="none">Yo'q</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

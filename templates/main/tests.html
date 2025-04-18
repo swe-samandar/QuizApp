@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+
+{% block title %} Test Library {% endblock title %}
+
+{% block content %}
+    <main class="container">
+        <section class="tests-header">
+            <h1>Test Library</h1>
+            <p>Browse our collection of tests and quizzes to find the perfect challenge for you</p>
+            
+            <div class="search-filter glass-card">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search tests...">
+                </div>
+                <div class="filter-options">
+                    <select id="category-filter">
+                        <option value="">All Categories</option>
+                        <option value="programming">Programming</option>
+                        <option value="math">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="language">Languages</option>
+                        <option value="history">History</option>
+                    </select>
+                    <select id="difficulty-filter">
+                        <option value="">All Difficulties</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="test-categories">
+            <h2 class="section-title">Categories</h2>
+            <div class="category-cards">
+                <div class="category-card glass-card" data-category="programming">
+                    <div class="category-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Programming</h3>
+                    <p>120+ tests</p>
+                </div>
+                <div class="category-card glass-card" data-category="math">
+                    <div class="category-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Mathematics</h3>
+                    <p>85+ tests</p>
+                </div>
+                <div class="category-card glass-card" data-category="science">
+                    <div class="category-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Science</h3>
+                    <p>75+ tests</p>
+                </div>
+                <div class="category-card glass-card" data-category="language">
+                    <div class="category-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Languages</h3>
+                    <p>60+ tests</p>
+                </div>
+                <div class="category-card glass-card" data-category="history">
+                    <div class="category-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>History</h3>
+                    <p>45+ tests</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="test-library">
+            <div class="library-header">
+                <h2>Popular Tests</h2>
+                <div class="view-options">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="test-grid" id="test-view">
+                <div class="test-card glass-card" data-category="programming" data-difficulty="beginner">
+                    <div class="test-badge">New</div>
+                    <div class="test-image">
+                        <img src="assets/js-test.jpg" alt="JavaScript Test">
+                    </div>
+                    <div class="test-content">
+                        <div class="test-meta">
+                            <span class="test-category">Programming</span>
+                            <span class="test-difficulty beginner">Beginner</span>
+                        </div>
+                        <h3>JavaScript Basics</h3>
+                        <p class="test-description">Master the fundamentals of JavaScript with this comprehensive test.</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-question-circle"></i> 20 Questions</span>
+                            <span><i class="fas fa-clock"></i> 15 Min</span>
+                        </div>
+                        <div class="test-actions">
+                            <button class="btn btn-primary btn-sm">Start Test</button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-card glass-card" data-category="math" data-difficulty="intermediate">
+                    <div class="test-image">
+                        <img src="assets/math-test.jpg" alt="Math Test">
+                    </div>
+                    <div class="test-content">
+                        <div class="test-meta">
+                            <span class="test-category">Mathematics</span>
+                            <span class="test-difficulty intermediate">Intermediate</span>
+                        </div>
+                        <h3>Algebra Challenge</h3>
+                        <p class="test-description">Test your algebra skills with equations, inequalities and functions.</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-question-circle"></i> 25 Questions</span>
+                            <span><i class="fas fa-clock"></i> 20 Min</span>
+                        </div>
+                        <div class="test-actions">
+                            <button class="btn btn-primary btn-sm">Start Test</button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-card glass-card" data-category="science" data-difficulty="advanced">
+                    <div class="test-badge">Popular</div>
+                    <div class="test-image">
+                        <img src="assets/science-test.jpg" alt="Science Test">
+                    </div>
+                    <div class="test-content">
+                        <div class="test-meta">
+                            <span class="test-category">Science</span>
+                            <span class="test-difficulty advanced">Advanced</span>
+                        </div>
+                        <h3>Physics Mastery</h3>
+                        <p class="test-description">Advanced physics concepts including mechanics and thermodynamics.</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-question-circle"></i> 30 Questions</span>
+                            <span><i class="fas fa-clock"></i> 25 Min</span>
+                        </div>
+                        <div class="test-actions">
+                            <button class="btn btn-primary btn-sm">Start Test</button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-card glass-card" data-category="language" data-difficulty="beginner">
+                    <div class="test-image">
+                        <img src="assets/language-test.jpg" alt="Language Test">
+                    </div>
+                    <div class="test-content">
+                        <div class="test-meta">
+                            <span class="test-category">Languages</span>
+                            <span class="test-difficulty beginner">Beginner</span>
+                        </div>
+                        <h3>English Grammar</h3>
+                        <p class="test-description">Essential English grammar rules and sentence structures.</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-question-circle"></i> 15 Questions</span>
+                            <span><i class="fas fa-clock"></i> 10 Min</span>
+                        </div>
+                        <div class="test-actions">
+                            <button class="btn btn-primary btn-sm">Start Test</button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-card glass-card" data-category="history" data-difficulty="intermediate">
+                    <div class="test-image">
+                        <img src="assets/history-test.jpg" alt="History Test">
+                    </div>
+                    <div class="test-content">
+                        <div class="test-meta">
+                            <span class="test-category">History</span>
+                            <span class="test-difficulty intermediate">Intermediate</span>
+                        </div>
+                        <h3>World History</h3>
+                        <p class="test-description">Key events and figures from ancient civilizations to modern times.</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-question-circle"></i> 20 Questions</span>
+                            <span><i class="fas fa-clock"></i> 15 Min</span>
+                        </div>
+                        <div class="test-actions">
+                            <button class="btn btn-primary btn-sm">Start Test</button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-card glass-card" data-category="programming" data-difficulty="advanced">
+                    <div class="test-badge">Challenge</div>
+                    <div class="test-image">
+                        <img src="assets/python-test.jpg" alt="Python Test">
+                    </div>
+                    <div class="test-content">
+                        <div class="test-meta">
+                            <span class="test-category">Programming</span>
+                            <span class="test-difficulty advanced">Advanced</span>
+                        </div>
+                        <h3>Python Expert</h3>
+                        <p class="test-description">Advanced Python concepts including decorators and generators.</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-question-circle"></i> 25 Questions</span>
+                            <span><i class="fas fa-clock"></i> 20 Min</span>
+                        </div>
+                        <div class="test-actions">
+                            <button class="btn btn-primary btn-sm">Start Test</button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="load-more">
+                <button class="btn btn-outline">Load More Tests</button>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

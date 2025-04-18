@@ -1,0 +1,348 @@
+/* Sozlamalar sahifasi uchun maxsus stillar */
+
+/* Sahifa sarlavhasi */
+.settings-header {
+    margin: 30px 0;
+}
+
+.settings-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.settings-header p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.breadcrumbs a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: var(--primary-color);
+}
+
+.breadcrumbs i {
+    font-size: 0.7rem;
+}
+
+/* Sozlamalar kontenti */
+.settings-content {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+@media (max-width: 992px) {
+    .settings-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Yon menyu */
+.settings-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: sticky;
+    top: 100px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: var(--text-light);
+    text-decoration: none;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.menu-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--primary-color);
+}
+
+.menu-item.active {
+    background-color: rgba(108, 92, 231, 0.1);
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Asosiy sozlamalar qismi */
+.settings-section {
+    padding: 30px;
+    margin-bottom: 30px;
+    display: none;
+}
+
+.settings-section.active {
+    display: block;
+}
+
+.settings-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.settings-section h2 i {
+    color: var(--primary-color);
+}
+
+/* Sozlamalar formasi */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Xavfsizlik bo'limi */
+.security-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.security-item:last-child {
+    border-bottom: none;
+}
+
+.security-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.security-info p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* Toggle switcher */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Bildirishnomalar bo'limi */
+.notification-group {
+    margin-bottom: 30px;
+}
+
+.notification-group h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.notification-info h4 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.notification-info p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* Maxfiylik va interfeys sozlamalari */
+.privacy-item,
+.preference-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.privacy-info h3,
+.preference-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.privacy-info p,
+.preference-info p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.privacy-select,
+.preference-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    cursor: pointer;
+    min-width: 200px;
+}
+
+/* Mavzu tanlovi */
+.theme-options {
+    display: flex;
+    gap: 10px;
+}
+
+.theme-option {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.theme-option.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.theme-option.light {
+    background-color: #f5f6fa;
+}
+
+.theme-option.dark {
+    background-color: #2d3436;
+    color: white;
+}
+
+/* Responsivlik */
+@media (max-width: 768px) {
+    .security-item,
+    .notification-item,
+    .privacy-item,
+    .preference-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .theme-options {
+        flex-wrap: wrap;
+    }
+}
