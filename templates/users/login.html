@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %} LogIn {% endblock title %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% block content %}
+<div class="gradient-bg"></div>
+<div class="container">
+    <div class="auth-container glass-card">
+        <h2>Tizimga kirish</h2>
+        
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            Login yoki parol noto'g'ri. Iltimos, qayta urinib ko'ring.
+        </div>
+        {% endif %}
+        
+        {% if next %}
+            {% if user.is_authenticated %}
+            <div class="alert alert-warning">
+                Hisobingiz bu sahifaga kirish uchun ruxsatga ega emas.
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Iltimos, bu sahifani ko'rish uchun tizimga kiring.
+            </div>
+            {% endif %}
+        {% endif %}
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Foydalanuvchi nomi</label>
+                {{ form.username }}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Parol</label>
+                {{ form.password }}
+                <small class="form-text">
+                    <a href="">Parolni unutdingizmi?</a>
+                </small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Kirish</button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Hisobingiz yo'qmi? <a href="{% url 'users:register' %}">Ro'yxatdan o'tish</a></p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

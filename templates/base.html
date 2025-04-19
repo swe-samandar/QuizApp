@@ -39,8 +39,8 @@
                     </a>
                 </div>
                 <div class="auth-buttons">
-                    <button class="btn btn-outline" id="login-btn">Login</button>
-                    <button class="btn btn-primary" id="register-btn">Register</button>
+                    <a href="{% url 'users:login' %}"><button class="btn btn-outline">Login</button></a>
+                    <a href="{% url 'users:register' %}"><button class="btn btn-primary">Register</button></a>
                 </div>
                 <div class="user-menu">
                     <div class="user-avatar">
@@ -64,7 +64,7 @@
     {% endblock content %}
 
      <!-- Login Modal -->
-     <div class="modal" id="login-modal">
+     <!-- <div class="modal" id="login-modal">
         <div class="modal-content glass-card">
             <span class="close-modal">&times;</span>
             <h2>Login to Your Account</h2>
@@ -106,10 +106,10 @@
                 Don't have an account? <a href="#" id="switch-to-register">Register</a>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Register Modal -->
-    <div class="modal" id="register-modal">
+    <!-- <div class="modal" id="register-modal">
         <div class="modal-content glass-card">
             <span class="close-modal">&times;</span>
             <h2>Create an Account</h2>
@@ -160,7 +160,7 @@
                 Already have an account? <a href="#" id="switch-to-login">Login</a>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <footer class="glass-footer">
         <div class="container">

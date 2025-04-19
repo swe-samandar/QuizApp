@@ -4,7 +4,8 @@ from datetime import datetime
 
 
 def get_today(request):
-    return datetime.date(datetime.today())
+    today = datetime.date(datetime.today())
+    return {'today': today}
 
 # Create your views here.
 
