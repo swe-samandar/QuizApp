@@ -209,3 +209,19 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', animateOnScroll);
     animateOnScroll(); // Run once on page load
 });
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const circles = document.querySelectorAll(".score-circle");
+    circles.forEach(circle => {
+        const percent = parseInt(circle.dataset.percentage);
+        const radius = 70;
+        const circumference = 2 * Math.PI * radius;
+
+        const progress = circle.querySelector(".progress-ring-circle-fill");
+        progress.setAttribute("stroke-dasharray", circumference);
+        const offset = circumference * (1 - percent / 100);
+        progress.setAttribute("stroke-dashoffset", offset);
+    });
+});

@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% block title %}
+    Test - {{test.title}}
+{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-color: #58a6ff;
+        --secondary-color: #1f6feb;
+        --bg-color: #0d1117;
+        --card-bg: #161b22;
+        --text-color: #c9d1d9;
+        --border-color: #30363d;
+        --correct-color: #238636;
+        --incorrect-color: #da3633;
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+    
+    .test-container {
+        max-width: 800px;
+        margin: 2rem auto;
+    }
+    
+    .test-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    }
+    
+    .test-header {
+        background-color: rgba(31, 111, 235, 0.1);
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .test-title {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        margin: 0;
+        font-weight: 600;
+    }
+    
+    .test-body {
+        padding: 1.5rem;
+    }
+    
+    .question-card {
+        background-color: rgba(22, 27, 34, 0.7);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .question-card:hover {
+        border-color: var(--primary-color);
+    }
+    
+    .question-number {
+        display: inline-block;
+        background-color: var(--secondary-color);
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+    
+    .question-text {
+        font-size: 1.25rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-weight: 500;
+    }
+    
+    .code-block {
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .option-list {
+        margin: 1rem 0;
+    }
+    
+    .option-item {
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        border-radius: 6px;
+        background-color: rgba(48, 54, 61, 0.3);
+        border: 1px solid var(--border-color);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+    }
+    
+    .option-item:hover {
+        background-color: rgba(48, 54, 61, 0.5);
+        border-color: var(--primary-color);
+    }
+    
+    .option-input {
+        margin-right: 12px;
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+    
+    .option-label {
+        cursor: pointer;
+        flex-grow: 1;
+    }
+    
+    .divider {
+        border: none;
+        height: 1px;
+        background-color: var(--border-color);
+        margin: 1.5rem 0;
+    }
+    
+    .submit-btn {
+        background-color: var(--secondary-color);
+        border: none;
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: block;
+        margin: 2rem auto 0;
+        font-weight: 500;
+    }
+    
+    .submit-btn:hover {
+        background-color: #1a5fc8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+    }
+    
+    .submit-btn i {
+        margin-right: 8px;
+    }
+    
+    .alert-danger {
+        background-color: rgba(218, 54, 51, 0.1);
+        border: 1px solid var(--incorrect-color);
+        color: #f85149;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .test-container {
+            padding: 0 1rem;
+        }
+        
+        .test-title {
+            font-size: 1.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+<div class="test-container">
+    <div class="test-card">
+        <div class="test-header">
+            <h1 class="test-title">
+                <i class="fas fa-file-alt"></i> {{ test.title }}
+            </h1>
+            <div id="timer" style="margin-top: 10px; font-size: 1.1rem; font-weight: 500; color: #ffcb6b;">
+                Qolgan vaqt: hisoblanmoqda...
+            </div>
+        </div>
+
+        <div class="test-body">
+            {% if error %}
+                <div class="alert-danger" role="alert">
+                    <i class="fas fa-exclamation-circle"></i> {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                {% for question in questions %}
+                    <div class="question-card">
+                        <h3 class="question-text">
+                            <span class="question-number">{{ forloop.counter }}</span>
+                            {{ question.question }}
+                        </h3>
+
+                        {% if question.code %}
+                            <div class="code-block">
+                                <pre><code class="language-{{ question.language }}">{{ question.code|safe }}</code></pre>
+                            </div>
+                        {% endif %}
+
+                        <div class="option-list">
+                            <div class="option-item">
+                                <input class="option-input" type="radio" name="{{ question.id }}" value="a" id="{{ question.id }}_a">
+                                <label class="option-label" for="{{ question.id }}_a">{{ question.a }}</label>
+                            </div>
+                            <div class="option-item">
+                                <input class="option-input" type="radio" name="{{ question.id }}" value="b" id="{{ question.id }}_b">
+                                <label class="option-label" for="{{ question.id }}_b">{{ question.b }}</label>
+                            </div>
+                            <div class="option-item">
+                                <input class="option-input" type="radio" name="{{ question.id }}" value="c" id="{{ question.id }}_c">
+                                <label class="option-label" for="{{ question.id }}_c">{{ question.c }}</label>
+                            </div>
+                            <div class="option-item">
+                                <input class="option-input" type="radio" name="{{ question.id }}" value="d" id="{{ question.id }}_d">
+                                <label class="option-label" for="{{ question.id }}_d">{{ question.d }}</label>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Test
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Highlight.js va Timer script -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        hljs.highlightAll();
+
+        // Taymer
+        let seconds = {{ remaining_seconds }};
+        const timerDiv = document.getElementById('timer');
+
+        function updateTimer() {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timerDiv.textContent = `Qolgan vaqt: ${minutes}:${secs.toString().padStart(2, '0')}`;
+
+            if (seconds <= 0) {
+                alert("Vaqt tugadi! Test avtomatik yuboriladi.");
+                document.querySelector('form').submit();
+            } else {
+                seconds--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        updateTimer();
+
+        // Tanlangan variantni bo‘yash
+        const optionItems = document.querySelectorAll('.option-item');
+        optionItems.forEach(item => {
+            const radio = item.querySelector('input[type="radio"]');
+
+            radio.addEventListener('change', function () {
+                const questionOptions = document.querySelectorAll(`.option-item input[name="${this.name}"]`);
+                questionOptions.forEach(opt => {
+                    opt.closest('.option-item').style.borderColor = 'var(--border-color)';
+                    opt.closest('.option-item').style.backgroundColor = 'rgba(48, 54, 61, 0.3)';
+                });
+
+                if (this.checked) {
+                    this.closest('.option-item').style.borderColor = 'var(--primary-color)';
+                    this.closest('.option-item').style.backgroundColor = 'rgba(31, 111, 235, 0.2)';
+                }
+            });
+
+            if (radio.checked) {
+                radio.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+</script>
+{% endblock content %}

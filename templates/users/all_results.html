@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %} Results {% endblock title %}
+    
+{% block content %}
+<style>
+.hidden {
+    display: none;
+}
+</style>
+    <main class="container">
+        <section class="profile-header">
+            <div class="breadcrumbs">
+                <a href="{% url 'users:dashboard' %}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Results</span>
+            </div>
+            <h1>{{ customuser.username }}'s Results</h1>
+        </section>
+
+        <section class="profile-content">
+            <div class="profile-sidebar">
+                <div class="profile-card glass-card">
+            <div class="results-table">
+                {% if completed_tests.exists %}
+                    <div class="table-header" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; background: #f9f9f9; padding: 0.75rem 1rem; border-radius: 8px; font-weight: bold; font-size: 0.9rem; color: #555;">
+                        <div>Test</div>
+                        <div>Date</div>
+                        <div>Score</div>
+                        <div>Time</div>
+                        <div>Action</div>
+                    </div>
+
+                    {% for test in completed_tests %}
+                        <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; align-items: center; padding: 1rem; border-bottom: 1px solid #eee;">
+                            <div class="table-cell">
+                                <h4 style="margin: 0; font-size: 1rem;">{{ test.test.title }}</h4>
+                                <p style="margin: 0; color: #888; font-size: 0.85rem;">{{ test.test.category.name }}</p>
+                            </div>
+                            <div class="table-cell">
+                                <span style="font-size: 0.9rem; color: #099;">Today</span>
+                            </div>
+                            <div class="table-cell">
+                                <span class="score-badge" style="background: #e0f7fa; color: #00796b; padding: 0.3rem 0.7rem; border-radius: 999px; font-weight: bold;">{{ test.percentage }}%</span>
+                            </div>
+                            <div class="table-cell">
+                                <span style="font-size: 0.9rem; color: #099;">{{ test.spent_time }} second</span>
+                            </div>
+                            <div class="table-cell">
+                                <a href="{% url 'main:result' test.id %}" style="text-decoration: none;">
+                                    <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; border: 1px solid #4caf50; border-radius: 5px; color: #4caf50; background: transparent; cursor: pointer;">View</button>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="text-align: center; padding: 2rem;">
+                        <h4 style="color: #777;">You haven't taken any tests yet.</h4>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

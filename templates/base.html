@@ -4,7 +4,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TestHub | {% block title %}  {% endblock title %}</title>
+    <title>TestLib | {% block title %}  {% endblock title %}</title>
+    <link rel="icon" type="image/png" href="{% static 'assets/brain_logo.svg' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
     <link rel="stylesheet" href="{% static 'css/result.css' %}" />
@@ -16,6 +17,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   </head>
   <body>
     <div class="gradient-bg"></div>
@@ -25,33 +27,39 @@
             <nav>
                 <div class="logo">
                     <i class="fas fa-brain"></i>
-                    <span>TestHub</span>
+                    <span>TestLib/span>
                 </div>
                 <div class="nav-links">
-                    <a href="{% url 'main:index' %}" class="active">Home</a>
+                    <a href="{% url 'main:index' %}">Home</a>
                     <a href="{% url 'main:tests' %}">Tests</a>
-                    <a href="{% url 'main:result' %}">Result</a>
-                    <a href="{% url 'main:error_404' %}">404 Page</a>
-                    <a href="{% url 'main:about' %}">About</a>
+                    <!-- <a href="{% url 'main:about' %}">About</a> -->
                     <a href="{% url 'users:dashboard' %}">Dashboard</a>
+                    {% if request.user.is_superuser %}
+                        <a href="{% url 'main:new_category' %}">Add Category</a>
+                        <a href="{% url 'main:new_test' %}">Add Test</a>
+                        <a href="{% url 'main:new_question' %}">Add Question</a>
+                    {% endif %}
                     <a href="#" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                     </a>
                 </div>
+                {% if not request.user.is_authenticated %}
                 <div class="auth-buttons">
                     <a href="{% url 'users:login' %}"><button class="btn btn-outline">Login</button></a>
                     <a href="{% url 'users:register' %}"><button class="btn btn-primary">Register</button></a>
                 </div>
+                {% else %}
                 <div class="user-menu">
                     <div class="user-avatar">
-                        <img src="assets/avatar.png" alt="User Avatar">
+                        <img src="{{ request.user.avatar.url }}" alt="User Avatar">
                     </div>
                     <div class="dropdown-menu">
-                        <a href="{% url 'users:profile' %}"><i class="fas fa-user"></i> Profile</a>
-                        <a href="{% url 'main:settings' %}"><i class="fas fa-cog"></i> Settings</a>
-                        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        <a href="{% url 'users:profile' request.user.username %}"><i class="fas fa-user"></i> Profile</a>
+                        <a href="{% url 'users:settings' %}"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="{% url 'users:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
+                {% endif %}
                 <div class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
                 </div>
@@ -62,6 +70,8 @@
     {% block content %}
 
     {% endblock content %}
+
+    {% block script %}   {% endblock script %}
 
      <!-- Login Modal -->
      <!-- <div class="modal" id="login-modal">
@@ -192,7 +202,7 @@
             </div>
             <div class="footer-bottom">
                 <div class="copyright">
-                    &copy; {{ today.year }} TestHub. All rights reserved.
+                    &copy; {{ today.year }} TestLib. All rights reserved.
                 </div>
                 <div class="social-icons">
                     <a href="#"><i class="fab fa-twitter"></i></a>

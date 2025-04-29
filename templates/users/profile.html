@@ -3,6 +3,11 @@
 {% block title %} Results {% endblock title %}
     
 {% block content %}
+<style>
+.hidden {
+    display: none;
+}
+</style>
     <main class="container">
         <section class="profile-header">
             <div class="breadcrumbs">
@@ -16,231 +21,186 @@
         <section class="profile-content">
             <div class="profile-sidebar">
                 <div class="profile-card glass-card">
-                    <div class="profile-avatar">
-                        <img src="assets/avatar-large.png" alt="Profile Avatar">
-                        <button class="avatar-edit">
-                            <i class="fas fa-camera"></i>
-                        </button>
+                    <div class="profile-avatar" style="text-align: center; margin-bottom: 1rem; position: relative;">
+                        <img id="profile-avatar-img" src="{{ customuser.avatar.url }}" alt="Profile Avatar" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: 3px solid #ccc;">
+                        {% if request.user == customuser %}
+                            <form id="avatar-upload-form" method="post" enctype="multipart/form-data" style="margin-top: 1rem;">
+                                {% csrf_token %}
+                                
+                                <input id="id_avatar" type="file" name="avatar" style="display: none;">
+                                
+                                <label for="id_avatar" style="display: inline-flex; align-items: center; gap: 0.4rem; background-color: #4caf50; color: white; padding: 0.4rem 0.8rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem;">
+                                    <i class="fas fa-upload"></i> Upload New
+                                </label>
+                        
+                                <span id="file-name" style="margin-left: 0.5rem; color: #ccc;"></span>
+                            </form>
+                        {% endif %}
                     </div>
-                    <div class="profile-info">
-                        <h2>Alex Johnson</h2>
-                        <p class="profile-email">alex.johnson@example.com</p>
-                        <p class="profile-join-date">
-                            <i class="fas fa-calendar-alt"></i> Member since June 2022
+                    
+                    
+                    <div class="profile-info" style="text-align: center;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.2rem;">{{ customuser.get_full_name }}</h2>
+                        <p class="profile-email" style="color: #c3c3c3; margin-bottom: 0.5rem;">{{ customuser.email }}</p>
+                        <p class="profile-join-date" style="font-size: 0.9rem; color: #c4c4c4;">
+                            <i class="fas fa-calendar-alt"></i> Joined {{ customuser.date_joined|date:"F Y" }}
                         </p>
-                        <div class="profile-badges">
-                            <div class="badge">
-                                <i class="fas fa-medal gold"></i>
-                                <span>Gold Member</span>
+                
+                        <div class="profile-badges" style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+                            <div class="badge" style="background: #595555; padding: 0.5rem 1rem; border-radius: 999px; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-medal" style="color: gold;"></i>
+                                <span style="font-weight: bold;">{{ customuser.medal }}</span>
                             </div>
-                            <div class="badge">
-                                <i class="fas fa-fire"></i>
-                                <span>5 Day Streak</span>
+                            <div class="badge" style="background: #595555; padding: 0.5rem 1rem; border-radius: 999px; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-fire" style="color: orange;"></i>
+                                <span style="font-weight: bold;">{{ customuser.streak_count }} Day Streak</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="profile-stats glass-card">
-                    <h3>Quick Stats</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-icon">
+                
+                <div class="profile-stats glass-card" style="margin-top: 2rem;">
+                    <h3 style="text-align: center; margin-bottom: 1.5rem; font-size: 1.2rem;">Quick Stats</h3>
+                    <div class="stats-grid" style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;">
+                        
+                        <div class="stat-item" style="flex: 1; min-width: 120px; text-align: center;">
+                            <div class="stat-icon" style="font-size: 2rem; color: #4caf50;">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <div class="stat-content">
-                                <span class="stat-value">42</span>
-                                <span class="stat-label">Tests Taken</span>
+                            <div class="stat-content" style="margin-top: 0.5rem;">
+                                <span class="stat-value" style="font-size: 1.5rem; font-weight: bold;">{{ customuser.completed_tests }}</span>
+                                <div class="stat-label" style="font-size: 0.9rem; color: #777;">Tests Taken</div>
                             </div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">
+                
+                        <div class="stat-item" style="flex: 1; min-width: 120px; text-align: center;">
+                            <div class="stat-icon" style="font-size: 2rem; color: #2196f3;">
                                 <i class="fas fa-trophy"></i>
                             </div>
-                            <div class="stat-content">
-                                <span class="stat-value">#28</span>
-                                <span class="stat-label">Global Rank</span>
+                            <div class="stat-content" style="margin-top: 0.5rem;">
+                                <span class="stat-value" style="font-size: 1.5rem; font-weight: bold;">#{{ user_rank }}</span>
+                                <div class="stat-label" style="font-size: 0.9rem; color: #777;">Global Rank</div>
                             </div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">
+                
+                        <div class="stat-item" style="flex: 1; min-width: 120px; text-align: center;">
+                            <div class="stat-icon" style="font-size: 2rem; color: #ff9800;">
                                 <i class="fas fa-star"></i>
                             </div>
-                            <div class="stat-content">
-                                <span class="stat-value">89%</span>
-                                <span class="stat-label">Avg. Score</span>
+                            <div class="stat-content" style="margin-top: 0.5rem;">
+                                <span class="stat-value" style="font-size: 1.5rem; font-weight: bold;">{{ customuser.average_score }}%</span>
+                                <div class="stat-label" style="font-size: 0.9rem; color: #777;">Average Score</div>
                             </div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-icon">
+                        
+                        <!-- Streak -->
+                        <div class="stat-item" style="flex: 1; min-width: 120px; text-align: center;">
+                            <div class="stat-icon" style="font-size: 2rem; color: #ff5722;">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="stat-content" style="margin-top: 0.5rem;">
+                                <span class="stat-value" style="font-size: 1.5rem; font-weight: bold;">
+                                    {{ customuser.streak_count }} Day
+                                </span>
+                                <div class="stat-label" style="font-size: 0.9rem; color: #777;">Streak</div>
+                            </div>
+                        </div>
+                    
+                        <!-- Time Spent -->
+                        <div class="stat-item" style="flex: 1; min-width: 120px; text-align: center;">
+                            <div class="stat-icon" style="font-size: 2rem; color: #3f51b5;">
                                 <i class="fas fa-clock"></i>
                             </div>
-                            <div class="stat-content">
-                                <span class="stat-value">12h</span>
-                                <span class="stat-label">Time Spent</span>
+                            <div class="stat-content" style="margin-top: 0.5rem;">
+                                <span class="stat-value" style="font-size: 1.5rem; font-weight: bold;">
+                                    {{ customuser.time_spent }}
+                                </span>
+                                <div class="stat-label" style="font-size: 0.9rem; color: #777;">Time Spent</div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="profile-skills glass-card">
-                    <h3>Skill Levels</h3>
-                    <div class="skill-item">
-                        <span class="skill-name">JavaScript</span>
-                        <div class="skill-bar">
-                            <div class="skill-level" style="width: 85%"></div>
-                        </div>
-                        <span class="skill-percent">85%</span>
+                <div class="profile-section glass-card" style="margin-top: 2rem; padding: 1.5rem;">
+                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.4rem; font-weight: bold;">Recent Test Results</h2>
+                        <a href="{% url 'users:all_results' customuser.username %}" class="view-all" style="font-size: 0.9rem; color: #4caf50; text-decoration: underline;">View All</a>
                     </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Mathematics</span>
-                        <div class="skill-bar">
-                            <div class="skill-level" style="width: 72%"></div>
-                        </div>
-                        <span class="skill-percent">72%</span>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Science</span>
-                        <div class="skill-bar">
-                            <div class="skill-level" style="width: 68%"></div>
-                        </div>
-                        <span class="skill-percent">68%</span>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">History</span>
-                        <div class="skill-bar">
-                            <div class="skill-level" style="width: 91%"></div>
-                        </div>
-                        <span class="skill-percent">91%</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="profile-main">
-                <div class="profile-section glass-card">
-                    <div class="section-header">
-                        <h2>Activity Overview</h2>
-                        <select class="time-filter">
-                            <option value="week">This Week</option>
-                            <option value="month" selected>This Month</option>
-                            <option value="year">This Year</option>
-                            <option value="all">All Time</option>
-                        </select>
-                    </div>
-                    <div class="activity-chart">
-                        <canvas id="activityChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="profile-section glass-card">
-                    <div class="section-header">
-                        <h2>Recent Achievements</h2>
-                        <a href="#" class="view-all">View All</a>
-                    </div>
-                    <div class="achievements-grid">
-                        <div class="achievement-item">
-                            <div class="achievement-icon gold">
-                                <i class="fas fa-medal"></i>
-                            </div>
-                            <div class="achievement-content">
-                                <h3>JavaScript Master</h3>
-                                <p>Completed 10 JavaScript tests with 90%+ accuracy</p>
-                                <span class="achievement-date">Earned 2 days ago</span>
-                            </div>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon silver">
-                                <i class="fas fa-medal"></i>
-                            </div>
-                            <div class="achievement-content">
-                                <h3>Fast Learner</h3>
-                                <p>Completed 5 tests in one day</p>
-                                <span class="achievement-date">Earned 1 week ago</span>
-                            </div>
-                        </div>
-                        <div class="achievement-item">
-                            <div class="achievement-icon bronze">
-                                <i class="fas fa-medal"></i>
-                            </div>
-                            <div class="achievement-content">
-                                <h3>History Buff</h3>
-                                <p>Scored 100% on a History test</p>
-                                <span class="achievement-date">Earned 2 weeks ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="profile-section glass-card">
-                    <div class="section-header">
-                        <h2>Recent Test Results</h2>
-                        <a href="results.html" class="view-all">View All</a>
-                    </div>
+                
                     <div class="results-table">
-                        <div class="table-header">
-                            <div class="table-cell">Test</div>
-                            <div class="table-cell">Date</div>
-                            <div class="table-cell">Score</div>
-                            <div class="table-cell">Time</div>
-                            <div class="table-cell">Action</div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">
-                                <h4>Advanced JavaScript</h4>
-                                <p>Programming</p>
+                        {% if completed_tests.exists %}
+                            <div class="table-header" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; background: #f9f9f9; padding: 0.75rem 1rem; border-radius: 8px; font-weight: bold; font-size: 0.9rem; color: #555;">
+                                <div>Test</div>
+                                <div>Date</div>
+                                <div>Score</div>
+                                <div>Time</div>
+                                <div>Action</div>
                             </div>
-                            <div class="table-cell">
-                                <span>Today</span>
+                
+                            {% for test in completed_tests|slice:"0:3" %}
+                                <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; align-items: center; padding: 1rem; border-bottom: 1px solid #eee;">
+                                    <div class="table-cell">
+                                        <h4 style="margin: 0; font-size: 1rem;">{{ test.test.title }}</h4>
+                                        <p style="margin: 0; color: #888; font-size: 0.85rem;">{{ test.test.category.name }}</p>
+                                    </div>
+                                    <div class="table-cell">
+                                        <span style="font-size: 0.9rem; color: #099;">Today</span>
+                                    </div>
+                                    <div class="table-cell">
+                                        <span class="score-badge" style="background: #e0f7fa; color: #00796b; padding: 0.3rem 0.7rem; border-radius: 999px; font-weight: bold;">{{ test.percentage }}%</span>
+                                    </div>
+                                    <div class="table-cell">
+                                        <span style="font-size: 0.9rem; color: #099;">{{ test.spent_time }} second</span>
+                                    </div>
+                                    <div class="table-cell">
+                                        <a href="{% url 'main:result' test.id %}" style="text-decoration: none;">
+                                            <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; border: 1px solid #4caf50; border-radius: 5px; color: #4caf50; background: transparent; cursor: pointer;">View</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div style="text-align: center; padding: 2rem;">
+                                <h4 style="color: #777;">You haven't taken any tests yet.</h4>
                             </div>
-                            <div class="table-cell">
-                                <span class="score-badge">92%</span>
-                            </div>
-                            <div class="table-cell">
-                                <span>8:32 min</span>
-                            </div>
-                            <div class="table-cell">
-                                <button class="btn btn-outline btn-sm">View</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">
-                                <h4>Algebra Challenge</h4>
-                                <p>Mathematics</p>
-                            </div>
-                            <div class="table-cell">
-                                <span>2 days ago</span>
-                            </div>
-                            <div class="table-cell">
-                                <span class="score-badge">85%</span>
-                            </div>
-                            <div class="table-cell">
-                                <span>12:15 min</span>
-                            </div>
-                            <div class="table-cell">
-                                <button class="btn btn-outline btn-sm">View</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">
-                                <h4>World History</h4>
-                                <p>History</p>
-                            </div>
-                            <div class="table-cell">
-                                <span>1 week ago</span>
-                            </div>
-                            <div class="table-cell">
-                                <span class="score-badge">78%</span>
-                            </div>
-                            <div class="table-cell">
-                                <span>15:42 min</span>
-                            </div>
-                            <div class="table-cell">
-                                <button class="btn btn-outline btn-sm">View</button>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_avatar').change(function () {
+            let formData = new FormData($('#avatar-upload-form')[0]);
+    
+            $.ajax({
+                url: window.location.href,  // POST qilinadigan URL — shu sahifa
+                type: 'POST',
+                data: formData,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'  // Tokenni qo‘shish
+                },
+                success: function (response) {
+                    // Avatarni yangilash uchun rasm URL'ni qayta yuklaymiz
+                    location.reload(); // yoki
+                    // $('#profile-avatar-img').attr('src', 'yangi_avatar_url');
+                },
+                error: function (xhr, errmsg, err) {
+                    alert('Xatolik yuz berdi: ' + errmsg);
+                }
+            });
+        });
+    });
+
+    document.getElementById('id_avatar').addEventListener('change', function () {
+        let fileName = this.files[0] ? this.files[0].name : 'No file selected';
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>
+    
 {% endblock content %}

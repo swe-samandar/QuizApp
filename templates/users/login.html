@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} LogIn {% endblock title %}
 <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 {% block content %}
@@ -39,7 +39,7 @@
                 <label for="{{ form.password.id_for_label }}">Parol</label>
                 {{ form.password }}
                 <small class="form-text">
-                    <a href="">Parolni unutdingizmi?</a>
+                    <a href="{% url 'users:reset_password' %}">Parolni unutdingizmi?</a>
                 </small>
             </div>
             

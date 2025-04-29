@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Explore Tests {% endblock title %}
+
+{% block content %}
+<main class="container">
+    <section class="popular-tests">
+        <h2 class="section-title">Explore Tests</h2>
+        <div class="test-cards">
+            {% for test in tests %}
+            <div class="test-card glass-card">
+                <div class="test-badge">Intermediate</div>
+                <div class="test-icon">
+                    <i class="{{ test.icon_class }}"></i>
+                </div>
+                <h3>{{ test.title }}</h3>
+                <p>{{ test.question_count }} questions | {{ test.completed_count }} times completed</p>
+                <a href="{% url 'main:ready_to_test' test.id %}"><button class="btn btn-outline">Start Test</button></a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock content %}

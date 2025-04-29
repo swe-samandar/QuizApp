@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Testni Boshlash - {{test.title}} {% endblock title %}
+
+{% block content %}
+<div class="gradient-bg"></div>
+
+<div class="container">
+    <div class="glass-card test-start-card">
+        <div class="test-start-header">
+            <h2><i class="fas fa-file-alt"></i> Testni Boshlash - {{ test.title }}</h2>
+        </div>
+        
+        <div class="test-start-body">
+            <div class="test-info-grid">
+                <div class="test-info-item">
+                    <i class="fas fa-folder-open"></i>
+                    <div>
+                        <span class="info-label">Kategoriya:</span>
+                        <span class="info-value">{{ test.category }}</span>
+                    </div>
+                </div>
+                
+                <div class="test-info-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <div>
+                        <span class="info-label">Boshlanish sanasi:</span>
+                        <span class="info-value">{{ test.start_date }}</span>
+                    </div>
+                </div>
+                
+                <div class="test-info-item">
+                    <i class="fas fa-sync-alt"></i>
+                    <div>
+                        <span class="info-label">Maksimum harakatlar:</span>
+                        <span class="info-value">{{ test.max_attempt }} marta</span>
+                    </div>
+                </div>
+
+                <div class="test-info-item">
+                    <i class="fas fa-calendar-times"></i>
+                    <div>
+                        <span class="info-label">Tugash sanasi:</span>
+                        <span class="info-value">{{ test.end_time }}</span>
+                    </div>
+                </div>
+                
+                <div class="test-info-item">
+                    <i class="fas fa-question-circle"></i>
+                    <div>
+                        <span class="info-label">Savollar soni</span>
+                        <span class="info-value">{{ test.questions.all.count }} ta</span>
+                    </div>
+                </div>
+                
+                <div class="test-info-item">
+                    <i class="fas fa-user"></i>
+                    <div>
+                        <span class="info-label">Avtor</span>
+                        <span class="info-value">
+                            <a href="{% url 'users:profile' test.author.username %}" class="author-link">{{test.author.username}}</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-start-actions">
+                <a href="{% url 'main:test' test.id %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-play"></i> Testni boshlash
+                </a>
+                <a href="/" class="btn btn-outline btn-lg">
+                    <i class="fas fa-arrow-left"></i> Qaytish
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} Page Not Found {% endblock title %}
 
 {% block content %}
     <main class="container">
         <section class="not-found glass-card">
             <div class="astronaut">
-                <img src="assets/astronaut.svg" alt="Astronaut">
+                <img src="{% static 'assets/astronaut.svg' %}" alt="Astronaut">
             </div>
             <div class="not-found-content">
                 <h1>404</h1>
-                <h2>Lost in Space</h2>
+                <h2>{% if error %} {{ error }} {% else %} Lost in Space {% endif %}</h2>
                 <p>The page you're looking for doesn't exist or has been moved. Let's get you back home!</p>
                 <div class="not-found-actions">
                     <a href="{% url 'main:index' %}" class="btn btn-primary">

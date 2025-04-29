@@ -3,10 +3,11 @@
 {% block title %} Results {% endblock title %}
     
 {% block content %}
+
     <main class="container">
         <section class="result-header">
             <div class="breadcrumbs">
-                <a href="../users/dashboard.html">Dashboard</a>
+                <a href="{% url 'users:dashboard' %}">Dashboard</a>
                 <i class="fas fa-chevron-right"></i>
                 <span>Results</span>
             </div>
@@ -16,45 +17,43 @@
 
         <section class="result-summary glass-card">
             <div class="summary-content">
-                <h2>JavaScript Basics</h2>
-                <p class="test-meta">Completed: 2 days ago | Duration: 8 min 32 sec</p>
+                <h2>{{ checktest.test.title }}</h2>
+                <p class="test-meta">Completed:  days ago | Duration: 8 min 32 sec</p>
                 
                 <div class="score-display">
-                    <div class="score-circle">
+                    <div class="score-circle" data-percentage="{{ checktest.percentage }}">
                         <svg class="progress-ring" width="160" height="160">
-                            <circle class="progress-ring-circle" stroke-width="10" fill="transparent" r="70" cx="80" cy="80"/>
-                            <circle class="progress-ring-circle-fill" stroke-width="10" stroke-dasharray="440" stroke-dashoffset="110" fill="transparent" r="70" cx="80" cy="80"/>
+                            <circle class="progress-ring-circle" stroke="#2f2f2f" stroke-width="10" fill="transparent" r="70" cx="80" cy="80"/>
+                            <circle class="progress-ring-circle-fill" stroke="#58a6ff" stroke-width="10" fill="transparent" r="70" cx="80" cy="80"/>
                         </svg>
-                        <div class="score-percent">85%</div>
+                        <div class="score-percent">{{ checktest.percentage }}%</div>
                     </div>
                     <div class="score-details">
                         <div class="detail-item correct">
                             <span class="detail-label">Correct</span>
-                            <span class="detail-value">17</span>
+                            <span class="detail-value">{{ checktest.correct }}</span>
                         </div>
                         <div class="detail-item incorrect">
                             <span class="detail-label">Incorrect</span>
-                            <span class="detail-value">3</span>
-                        </div>
-                        <div class="detail-item skipped">
-                            <span class="detail-label">Skipped</span>
-                            <span class="detail-value">0</span>
+                            <span class="detail-value">{{ checktest.incorrect }}</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="result-actions">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-redo"></i> Retake Test
-                    </button>
-                    <button class="btn btn-outline">
+                    <a href="{% url 'main:test' checktest.test.id %}">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-redo"></i> Retake Test
+                        </button>
+                    </a>
+                    <!-- <button class="btn btn-outline">
                         <i class="fas fa-share"></i> Share Results
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </section>
 
-        <section class="result-details">
+        <!-- <section class="result-details">
             <div class="detail-section glass-card">
                 <h3>Performance Breakdown</h3>
                 <div class="performance-metrics">
@@ -129,94 +128,159 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <section class="question-review glass-card">
             <h2>Question Review</h2>
             <div class="review-tabs">
-                <button class="tab-btn active" data-tab="incorrect">Incorrect (3)</button>
-                <button class="tab-btn" data-tab="all">All Questions (20)</button>
-                <button class="tab-btn" data-tab="flagged">Flagged (2)</button>
+                <button class="tab-btn" data-tab="flagged">All Questions ({{ checktest.checkquestion_set.all.count }})</button>
+                <button class="tab-btn active" data-tab="incorrect">Incorrect ({{ checktest.incorrect }})</button>
             </div>
             
             <div class="question-list">
-                <div class="question-item incorrect">
-                    <div class="question-header">
-                        <span class="question-number">Q5</span>
-                        <span class="question-status incorrect">
-                            <i class="fas fa-times"></i> Incorrect
-                        </span>
-                    </div>
-                    <div class="question-content">
-                        <p>Which of the following is NOT a JavaScript data type?</p>
-                        <div class="answer-options">
-                            <div class="option correct">
-                                <span class="option-letter">A</span>
-                                <span class="option-text">Float</span>
+                {% if incorrects %}
+                    {% for incorrect in questions %}
+                        {% if incorrect in incorrects %}
+                            <div class="question-item incorrect">
+                                <div class="question-header">
+                                    <span class="question-number">Q{{ forloop.counter }}</span>
+                                    <span class="question-status incorrect">
+                                        <i class="fas fa-times"></i> Incorrect
+                                    </span>
+                                </div>
+                                <div class="question-content">
+                                    <p>{{ incorrect.question.question }}</p>
+                                    <div class="answer-options">
+                                        <div class="option {% if incorrect.question.correct_answer == 'a' %}correct{% elif incorrect.given_answer == 'a' %}selected{% endif %}">
+
+                                            <span class="option-letter">A</span>
+                                            <span class="option-text">{{ incorrect.question.a }}</span>
+                                        </div>
+                                        <div class="option {% if incorrect.question.correct_answer == 'b' %}correct{% elif incorrect.given_answer == 'b' %}selected{% endif %}">
+
+                                            <span class="option-letter">B</span>
+                                            <span class="option-text">{{ incorrect.question.b }}</span>
+                                        </div>
+                                        <div class="option {% if incorrect.question.correct_answer == 'c' %}correct{% elif incorrect.given_answer == 'c' %}selected{% endif %}">
+
+                                            <span class="option-letter">C</span>
+                                            <span class="option-text">{{ incorrect.question.c }}</span>
+                                        </div>
+                                        <div class="option {% if incorrect.question.correct_answer == 'd' %}correct{% elif incorrect.given_answer == 'd' %}selected{% endif %}">
+
+                                            <span class="option-letter">D</span>
+                                            <span class="option-text">{{ incorrect.question.d }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="explanation">
+                                        <h4>Explanation:</h4>
+                                        <p>JavaScript has Number type which represents both integer and floating point numbers, but it doesn't have separate Float type. The other options (Boolean, String, Object) are valid JavaScript data types.</p>
+                                    </div> -->
+                                </div>
                             </div>
-                            <div class="option selected">
-                                <span class="option-letter">B</span>
-                                <span class="option-text">Boolean</span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% for q in questions %}
+                    <div class="question-item flagged">
+                        <div class="question-header">
+                            <span class="question-number">Q{{ forloop.counter }}</span>
+                            {% if q in incorrects %}
+                                <span class="question-status incorrect">
+                                    <i class="fas fa-times"></i> Incorrect
+                                </span>
+                            {% else %}
+                                <span class="question-status correct" style="color: rgb(79, 219, 79); background-color: rgba(172, 207, 172, 0.1);">
+                                    <i class="fas fa-check"></i> Correct
+                                </span>
+                            {% endif %}
+                        </div>                        
+                        <div class="question-content">
+                            <p>{{ q.question.question }}</p>
+                            <div class="answer-options">
+                                <div class="option {% if q.question.correct_answer == 'a' %}correct{% elif q.given_answer == 'a' %}selected{% endif %}">
+
+                                    <span class="option-letter">A</span>
+                                    <span class="option-text">{{ q.question.a }}</span>
+                                </div>
+                                <div class="option {% if q.question.correct_answer == 'b' %}correct{% elif q.given_answer == 'b' %}selected{% endif %}">
+
+                                    <span class="option-letter">B</span>
+                                    <span class="option-text">{{ q.question.b }}</span>
+                                </div>
+                                <div class="option {% if q.question.correct_answer == 'c' %}correct{% elif q.given_answer == 'c' %}selected{% endif %}">
+
+                                    <span class="option-letter">C</span>
+                                    <span class="option-text">{{ q.question.c }}</span>
+                                </div>
+                                <div class="option {% if q.question.correct_answer == 'd' %}correct{% elif q.given_answer == 'd' %}selected{% endif %}">
+
+                                    <span class="option-letter">D</span>
+                                    <span class="option-text">{{ q.question.d }}</span>
+                                </div>
                             </div>
-                            <div class="option">
-                                <span class="option-letter">C</span>
-                                <span class="option-text">String</span>
-                            </div>
-                            <div class="option">
-                                <span class="option-letter">D</span>
-                                <span class="option-text">Object</span>
-                            </div>
+                            <!-- <div class="explanation">
+                                <h4>Explanation:</h4>
+                                <p>JavaScript has Number type which represents both integer and floating point numbers, but it doesn't have separate Float type. The other options (Boolean, String, Object) are valid JavaScript data types.</p>
+                            </div> -->
                         </div>
-                        <div class="explanation">
-                            <h4>Explanation:</h4>
-                            <p>JavaScript has Number type which represents both integer and floating point numbers, but it doesn't have separate Float type. The other options (Boolean, String, Object) are valid JavaScript data types.</p>
-                        </div>
                     </div>
-                </div>
-                
-                <div class="question-item incorrect">
-                    <div class="question-header">
-                        <span class="question-number">Q12</span>
-                        <span class="question-status incorrect">
-                            <i class="fas fa-times"></i> Incorrect
-                        </span>
-                    </div>
-                    <div class="question-content">
-                        <p>What will be the output of: <code>console.log(1 + "1")</code>?</p>
-                        <div class="answer-options">
-                            <div class="option">
-                                <span class="option-letter">A</span>
-                                <span class="option-text">2</span>
-                            </div>
-                            <div class="option correct">
-                                <span class="option-letter">B</span>
-                                <span class="option-text">"11"</span>
-                            </div>
-                            <div class="option selected">
-                                <span class="option-letter">C</span>
-                                <span class="option-text">NaN</span>
-                            </div>
-                            <div class="option">
-                                <span class="option-letter">D</span>
-                                <span class="option-text">TypeError</span>
-                            </div>
-                        </div>
-                        <div class="explanation">
-                            <h4>Explanation:</h4>
-                            <p>When using the + operator with a number and a string, JavaScript performs string concatenation. The number 1 is coerced into a string "1", resulting in "11".</p>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </section>
 
-        <section class="result-actions">
+        <!-- <section class="result-actions">
             <button class="btn btn-primary btn-lg">
                 <i class="fas fa-certificate"></i> Download Certificate
             </button>
             <button class="btn btn-outline btn-lg">
                 <i class="fas fa-chart-line"></i> View Detailed Analytics
             </button>
-        </section>
+        </section> -->
     </main>
+
+    <style>
+        .score-circle {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+
+        .score-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #c9d1d9;
+        }
+
+        .progress-ring-circle {
+            stroke: #2f2f2f;
+        }
+
+        .progress-ring-circle-fill {
+            stroke: #58a6ff;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+    </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const circles = document.querySelectorAll(".score-circle");
+        circles.forEach(circle => {
+            const percent = parseInt(circle.dataset.percentage);
+            const radius = 70;
+            const circumference = 2 * Math.PI * radius;
+
+            const progress = circle.querySelector(".progress-ring-circle-fill");
+            progress.setAttribute("stroke-dasharray", circumference);
+            const offset = circumference * (1 - percent / 100);
+            progress.setAttribute("stroke-dashoffset", offset);
+        });
+    });
+</script>
 {% endblock content %}

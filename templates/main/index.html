@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} Welcome {% endblock title %}
 
 {% block content %}
@@ -9,16 +9,16 @@
             <h1>Test Your Knowledge</h1>
             <p>Join thousands of learners improving their skills with our interactive tests and quizzes.</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary btn-lg">Get Started</button>
-                <button class="btn btn-outline btn-lg">Explore Tests</button>
+                <a href="{% url 'main:get_started' %}"><button class="btn btn-primary btn-lg">Get Started</button></a>
+                <a href="{% url 'main:explore' %}"><button class="btn btn-outline btn-lg">Explore Tests</button></a>
             </div>
         </div>
         <div class="hero-image">
-            <img src="assets/hero.svg" alt="Learning illustration">
+            <img src="{% static 'assets/default.png' %}" alt="Learning illustration" style="margin-top: 10px; width: 250px; height: 250px; object-fit: cover; border-radius: 30%; border: 3px solid #13a9b7;">
         </div>
     </section>
 
-    <section class="features">
+    <!-- <section class="features">
         <h2 class="section-title">Why Choose TestHub?</h2>
         <div class="feature-cards">
             <div class="feature-card glass-card">
@@ -43,36 +43,22 @@
                 <p>Compete with others and climb the ranks.</p>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <section class="popular-tests">
         <h2 class="section-title">Popular Tests</h2>
         <div class="test-cards">
+            {% for test in tests|slice:"0:3" %}
             <div class="test-card glass-card">
-                <div class="test-badge">New</div>
+                <div class="test-badge">Popular</div>
                 <div class="test-icon">
-                    <i class="fas fa-code"></i>
+                    <i class="{{ test.icon_class }}"></i>
                 </div>
-                <h3>JavaScript Basics</h3>
-                <p>15 questions | 10 min</p>
-                <button class="btn btn-outline">Start Test</button>
+                <h3>{{ test.title }}</h3>
+                <p>{{ test.question_count }} questions | {{ test.completed_count }} times completed</p>
+                <a href="{% url 'main:ready_to_test' test.id %}"><button class="btn btn-outline">Start Test</button></a>
             </div>
-            <div class="test-card glass-card">
-                <div class="test-icon">
-                    <i class="fas fa-calculator"></i>
-                </div>
-                <h3>Math Challenge</h3>
-                <p>20 questions | 15 min</p>
-                <button class="btn btn-outline">Start Test</button>
-            </div>
-            <div class="test-card glass-card">
-                <div class="test-icon">
-                    <i class="fas fa-globe"></i>
-                </div>
-                <h3>World Geography</h3>
-                <p>25 questions | 20 min</p>
-                <button class="btn btn-outline">Start Test</button>
-            </div>
+            {% endfor %}
         </div>
     </section>
 </main>
