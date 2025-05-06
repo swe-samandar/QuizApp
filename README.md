@@ -21,7 +21,7 @@
 
 ```bash
 # 1. Repositoryni klon qiling
-git clone https://gitlab.com:gitlab7680917/testlib.git
+git clone https://github.com/swe-samandar/Testlib.git or git@github.com:swe-samandar/Testlib.git
 cd testlib
 
 # 2. Virtual muhit yaratish va faollashtirish
