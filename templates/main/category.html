@@ -7,17 +7,23 @@
     <section class="popular-tests">
         <h2 class="section-title">{{ tests.0.category.name }} Tests</h2>
         <div class="test-cards">
-            {% for test in tests %}
-            <div class="test-card glass-card">
-                <div class="test-badge">{{ test.difficulty.title }}</div>
-                <div class="test-icon">
-                    <i class="{{ test.icon_class }}"></i>
+            {% if tests.exists %}
+                {% for test in tests %}
+                <div class="test-card glass-card">
+                    <div class="test-badge">{{ test.difficulty.title }}</div>
+                    <div class="test-icon">
+                        <i class="{{ test.icon_class }}"></i>
+                    </div>
+                    <h3>{{ test.title }}</h3>
+                    <p>{{ test.question_count }} questions | {{ test.completed_count }} times completed</p>
+                    <a href="{% url 'main:ready_to_test' test.id %}"><button class="btn btn-outline">Start Test</button></a>
                 </div>
-                <h3>{{ test.title }}</h3>
-                <p>{{ test.question_count }} questions | {{ test.completed_count }} times completed</p>
-                <a href="{% url 'main:ready_to_test' test.id %}"><button class="btn btn-outline">Start Test</button></a>
+                {% endfor %}
+            {% else %}
+            <div style="text-align: center; padding: 2rem;">
+                <h4 style="color: #dad60c;">There aren't any tests in this category yet.</h4>
             </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </section>
 </main>

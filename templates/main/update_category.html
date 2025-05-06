@@ -1,13 +1,16 @@
-{% extends "base.html" %}
-{% block title %} Add New Category {% endblock title %}
-
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Update Category {% endblock title %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
 {% block content %}
-    <div class="container">
+<div class="gradient-bg"></div>
+<div class="container" style="padding-top: 50px;">
+    <div class="auth-container glass-card">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-5">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0">New Category</h2>
+                        <h2 class="mb-0">Update Category</h2>
                     </div>
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
@@ -16,8 +19,8 @@
                             <div class="form-group mb-3">
                                 <label for="id_name" class="form-label">Category Name</label>
                                 <input type="text" class="form-control" id="id_name" name="name" 
-                                       placeholder="Enter category name" required
-                                       value="{{ form.name.value|default_if_none:'' }}">
+                                    placeholder="Enter category name" required
+                                    value="{{ form.name.value|default_if_none:'' }}">
                                 {% if form.name.errors %}
                                     <div class="invalid-feedback d-block">
                                         {{ form.name.errors|join:", " }}
@@ -28,8 +31,8 @@
                             <div class="form-group mb-4">
                                 <label for="id_icon_class" class="form-label">Icon Class</label>
                                 <input type="text" class="form-control" id="id_icon_class" name="icon_class" 
-                                       placeholder="e.g., 'fa fa-folder'" 
-                                       value="{{ form.icon_class.value|default_if_none:'fa fa-folder' }}">
+                                    placeholder="e.g., 'fa fa-folder'" 
+                                    value="{{ form.icon_class.value|default_if_none:'fa fa-folder' }}">
                                 <small class="form-text text-muted">
                                     Font Awesome icon class (e.g., 'fa fa-code', 'fa fa-book')
                                 </small>
@@ -41,11 +44,11 @@
                             </div>
                             
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a class="btn btn-secondary me-md-2" href="{% url 'main:index' %}">
-                                    <i class="fa fa-home"></i> Back home
+                                <a class="btn btn-secondary me-md-2" href="{% url 'users:profile' request.user.username %}">
+                                    <i class="fa fa-home"></i> Back To Profile
                                 </a>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-save"></i> Create
+                                    <i class="fa fa-save"></i> Update
                                 </button>
                             </div>
                         </form>
@@ -54,18 +57,18 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(7, 204, 235, 0.5);
-        }
-        .card-header {
-            border-radius: 10px 10px 0 0 !important;
-        }
-        .form-control:focus {
-            border-color: #4d90fe;
-            box-shadow: 0 0 0 0.2rem rgba(77, 144, 254, 0.25);
-        }
-    </style>
+</div>
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(7, 204, 235, 0.5);
+    }
+    .card-header {
+        border-radius: 10px 10px 0 0 !important;
+    }
+    .form-control:focus {
+        border-color: #4d90fe;
+        box-shadow: 0 0 0 0.2rem rgba(236, 254, 77, 0.25);
+    }
+</style>
 {% endblock content %}

@@ -5,11 +5,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import UserRegistrationForm, ProfileUpdateForm, ProfileImageForm, ChangePasswordForm
-from main.models import CheckTest, Test
+from main.models import CheckTest, Test, SavedTest
 from .models import CustomUser, OTP
 from django.contrib.auth import update_session_auth_hash
 from services import send_code_via_email, is_valid_email
 import random
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
 
 
 
@@ -34,10 +37,15 @@ class DashboardView(LoginRequiredMixin, View):
                 user_rank = index
                 break
         
+        saved_tests = []
+        if request.user.is_authenticated:
+            saved_tests = SavedTest.objects.filter(user=request.user).select_related('test', 'test__category')
+
         context = {
             'completed_tests': completed_tests,
             'users_rank': users_rank,
             'user_rank': user_rank,
+            'saved_tests': saved_tests,
             'recommends':Test.objects.filter(category__in=[test.test.category for test in completed_tests]),
         }
         return render(request, 'users/dashboard.html', context=context)
@@ -276,3 +284,24 @@ class SetNewPasswordView(View):
         request.session.flush()
 
         return redirect('users:login')  # foydalanuvchini login sahifasiga yuboramiz
+
+
+@method_decorator(require_POST, name='dispatch')
+class ToggleSavedTestView(View):
+    def post(self, request):
+        user = request.user
+
+        if not user.is_authenticated:
+            return JsonResponse({"status": "unauthenticated"}, status=401)
+
+        test_id = request.POST.get("test_id")
+        if not test_id:
+            return JsonResponse({"status": "invalid"}, status=400)
+
+        saved_test, created = SavedTest.objects.get_or_create(user=user, test_id=test_id)
+
+        if not created:
+            saved_test.delete()
+            return JsonResponse({"status": "unsaved"})
+
+        return JsonResponse({"status": "saved"})

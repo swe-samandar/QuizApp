@@ -1,11 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from datetime import datetime
-from .models import Test, Question, Category, CheckTest, CheckQuestion
+from .models import Test, Question, Category, CheckTest, CheckQuestion, SavedTest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CategoryForm, TestForm, QuestionForm 
 from django.utils import timezone
 from services import update_user_info, check_test
+from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied
+from django.db.models import Count
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+User = get_user_model()
 
 
 def get_today(request):
@@ -44,10 +51,16 @@ class TestsView(View):
         if difficulty:
             tests = tests.filter(difficulty=difficulty)
 
+        saved_tests = []
+        if request.user.is_authenticated:
+            saved_tests = list(SavedTest.objects.filter(user=request.user).values_list('test_id', flat=True))
+
         context = {
             'tests': tests,
-            'categories': categories
+            'categories': categories,
+            'saved_tests': saved_tests,
         }
+        print(saved_tests)
         return render(request, 'main/tests.html', context=context)
 
 
@@ -95,6 +108,9 @@ class TestView(LoginRequiredMixin, View):
         if test.max_attempt <= attemps:
             return render(request, 'main/404.html', {'error': "Siz bu testni ishlash uchun hamma imkoniyatdan foydlanib bo'lgansiz!"})
 
+        if timezone.now() < test.start_date or timezone.now() > test.end_time:
+            return render(request, 'main/404.html', {'error': "Bu testni ishlash vaqti hali kelmagan yoki tugagan!"})
+        
         request.session['start_time'] = timezone.now().isoformat()  # ✅ vaqtni saqlash
 
         # Start time saqlash
@@ -190,7 +206,20 @@ class ExploreTestsView(View):
         return render(request, 'main/explore_tests.html', {'tests': tests})
     
 
-class NewCategoryView(View):
+class CategoryView(View):
+    def get(self, request, category_name):
+        tests = Test.objects.filter(category__name=category_name)
+        return render(request, 'main/category.html', {'tests': tests})
+
+
+class NewCategoryView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return PermissionDenied("Sizda bu amalni bajarishga ruxsat yo'q.")
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request):
         form = CategoryForm()
         return render(request, 'main/new_category.html', {'form': form})
@@ -203,7 +232,14 @@ class NewCategoryView(View):
         return render(request, 'main/new_category.html', {'form': form})
 
 
-class NewTestView(View):
+class NewTestView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return PermissionDenied("Sizda bu amalni bajarishga ruxsat yo'q.")
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request):
         form = TestForm()
         return render(request, 'main/new_test.html', {'form': form})
@@ -218,7 +254,14 @@ class NewTestView(View):
         return render(request, 'main/new_test.html', {'form': form})
     
 
-class NewQuestionView(View):
+class NewQuestionView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return PermissionDenied("Sizda bu amalni bajarishga ruxsat yo'q.")
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request):
         form = QuestionForm()
         return render(request, 'main/new_question.html', {'form': form})
@@ -231,8 +274,181 @@ class NewQuestionView(View):
         return render(request, 'main/new_question.html', {'form': form})
     
 
-class CategoryView(View):
-    def get(self, request, category_name):
-        tests = Test.objects.filter(category__name=category_name)
-        return render(request, 'main/category.html', {'tests': tests})
+class UpdateCategoryView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return PermissionDenied("Sizda bu amalni bajarishga ruxsat yo'q.")
+        self.category = get_object_or_404(Category, id=kwargs['category_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        form = CategoryForm(instance=self.category)
+        return render(request, 'main/update_category.html', {'form': form})
+    
+    def post(self, request, *args, **kwargs):
+        form = CategoryForm(request.POST, instance=self.category)
+        if form.is_valid():
+            form.save()
+            return redirect('users:profile', request.user.username)
+        return render(request, 'main/update_category.html', {'form': form})
+    
+
+class UpdateTestView(View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return PermissionDenied("Sizda bu amalni bajarishga ruxsat yo'q.")
+        self.test = get_object_or_404(Test, id=kwargs['test_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        form = TestForm(instance=self.test)
+        return render(request, 'main/update_test.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = TestForm(request.POST, instance=self.test)
+        if form.is_valid():
+            form.save()
+            return redirect('users:profile', request.user.username)
+        return render(request, 'main/update_test.html', {'form': form})
+
+
+class UpdateQuestionView(View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return PermissionDenied("Sizda bu amalni bajarishga ruxsat yo'q.")
+        self.question = get_object_or_404(Question, id=kwargs['question_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        form = QuestionForm(instance=self.question)
+        return render(request, 'main/update_test.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = QuestionForm(request.POST, instance=self.question)
+        if form.is_valid():
+            form.save()
+            return redirect('users:profile', request.user.username)
+        return render(request, 'main/update_question.html', {'form': form})
+
+
+class DeleteCategoryView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise PermissionDenied("Faqat admin foydalanuvchilar bu amalni bajara oladi.")
+        self.category = get_object_or_404(Category, id=kwargs['category_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'main/delete_category.html', {'category': self.category})
+    
+    def post(self, request, *args, **kwargs):
+        self.category.delete()
+        return redirect('users:profile', request.user.username)
+    
+
+class DeleteTestView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise PermissionDenied("Faqat admin foydalanuvchilar bu amalni bajara oladi.")
+        self.test = get_object_or_404(Test, id=kwargs['test_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'main/delete_test.html', {'test': self.test})
+
+    def post(self, request, *args, **kwargs):
+        self.test.delete()
+        return redirect('users:profile', request.user.username)
+
+
+class DeleteQuestionView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise PermissionDenied("Faqat admin foydalanuvchilar bu amalni bajara oladi.")
+        self.question = get_object_or_404(Question, id=kwargs['question_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'main/delete_question.html', {'question': self.question})
+    
+    def post(self, request, *args, **kwargs):
+        self.question.delete()
+        return redirect('users:profile', request.user.username)
+
+
+class ManageCategoriesView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise PermissionDenied("Faqat admin foydalanuvchilar bu amalni bajara oladi.")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        categories = Category.objects.all()
+        context = {
+            'categories': categories
+        }
+        return render(request, 'main/manage_categories.html', context)
+    
+
+class ManageTestsView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise PermissionDenied("Faqat admin foydalanuvchilar bu amalni bajara oladi.")
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request):
+        tests = Test.objects.all()
+        context = {
+            'tests': tests
+        }
+        return render(request, 'main/manage_tests.html', context)
+
+
+class ManageQuestionsView(LoginRequiredMixin, View):
+    login_url = 'users:login'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise PermissionDenied("Faqat admin foydalanuvchilar bu amalni bajara oladi.")
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request):
+        tests = Test.objects.annotate(
+            question_count=Count('questions')
+        ).order_by('-question_count')
+
+        context = {
+            'tests': tests
+        }
+        return render(request, 'main/manage_questions.html', context)
+
+
+@login_required
+def toggle_saved_test(request):
+    if request.method == 'POST':
+        test_id = request.POST.get('test_id')
+        test = Test.objects.get(id=test_id)
+        saved, created = SavedTest.objects.get_or_create(user=request.user, test=test)
+        if not created:
+            saved.delete()
+            return JsonResponse({'status': 'removed'})
+        return JsonResponse({'status': 'saved'})
+
+
 

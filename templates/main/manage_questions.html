@@ -1,0 +1,90 @@
+{% load static %}
+{% load duration_filters %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestLib | Savollarni Boshqarish </title>
+    <link rel="icon" type="image/png" href="{% static 'assets/brain_logo.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/manage_questions.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">Savollarni Boshqarish</h1>
+            <div style="display: flex;">
+                <a href="{% url 'main:index' %}" class="add-btn" style="text-decoration: none; margin-right: 5px;">
+                    <i class="fas fa-home"></i>
+                    Bosh sahifa
+                </a>
+                <a href="{% url 'main:new_question' %}" class="add-btn" style="text-decoration: none;">
+                    <i class="fas fa-plus"></i>
+                    Yangi Savol
+                </a>
+            </div>
+        </div>
+        
+        {% if tests.exists %}
+            {% for test in tests %}
+                <div class="test-info">
+                    <div>
+                        <div class="test-title">{{ test.title }}</div>
+                        <div class="test-meta">Kategoriya: {{ test.category.name }}h | Umumiy savollar: {{ test.question_count }} | Vaqt: {{ test.duration|duration_in_minutes }} daqiqa</div>
+                    </div>
+                    <a href="{% url 'main:manage_tests' %}" class="action-btn preview-btn" style="text-decoration: none;">
+                        <i class="fas fa-eye"></i>
+                        Testni Ko'rish
+                    </a>
+                </div>
+                {% if test.questions.all %}
+                    <div class="questions-table">
+                        <div class="table-header">
+                            <div>#</div>
+                            <div>Savol Matni</div>
+                            <div>To'g'ri javob</div>
+                            <div>Boshqaruv</div>
+                        </div>
+                    {% for question in test.questions.all %}    
+                        <!-- Savollar ro'yxati -->
+                        <div class="question-item">
+                            <div class="question-number">Q{{ forloop.counter }}</div>
+                            <div class="question-text">{{ question.question }}</div>
+                            <div><span class="question-type">{{ question.correct_answer }}</span></div>
+                            <div class="question-actions">
+                                <a href="{% url 'main:update_question' question.id %}" class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'main:delete_question' question.id %}" class="action-btn delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Agar savollar bo'lmasa -->
+                    <div class="empty-state">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>Savollar Topilmadi</h3>
+                        <p>Yangi savol qo'shish uchun yuqoridagi tugmadan foydalaning</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <!-- Agar savollar bo'lmasa -->
+            <div class="empty-state">
+                <i class="fas fa-question-circle"></i>
+                <h3>Testlar Topilmadi</h3>
+                <p>Yangi test qo'shish uchun quyidagi tugmadan foydalaning</p>
+                <div style="display: flex;">
+                    <a href="{% url 'main:new_test' %}" class="add-btn" style="text-decoration: none; width: 100px; height: 30px">
+                        <span style="font-weight: bold; font-size: larger;">+</span>Yangi Test
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -35,10 +35,19 @@
                     <!-- <a href="{% url 'main:about' %}">About</a> -->
                     <a href="{% url 'users:dashboard' %}">Dashboard</a>
                     {% if request.user.is_superuser %}
-                        <a href="{% url 'main:new_category' %}">Add Category</a>
-                        <a href="{% url 'main:new_test' %}">Add Test</a>
-                        <a href="{% url 'main:new_question' %}">Add Question</a>
+                        <div class="user-menu">
+                            <div class="hamburger-menu">
+                                <i class="fas fa-bars"></i>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a href="{% url 'main:manage_categories' %}"><i class="fas fa-folder-open"></i> Manage Categeries</a>
+                                <a href="{% url 'main:manage_tests' %}"><i class="fas fa-tasks"></i> Manage Tests</a>
+                                <a href="{% url 'main:manage_questions' %}"><i class="fas fa-question-circle"></i> Manage Questions</a>
+                            </div>
+                        </div>
                     {% endif %}
+
+
                     <a href="#" id="theme-toggle">
                     <i class="fas fa-moon"></i>
                     </a>
@@ -177,7 +186,7 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <i class="fas fa-brain"></i>
-                    <span>TestHub</span>
+                    <span>TestLib</span>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
@@ -208,7 +217,7 @@
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-facebook"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href=""><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </div>
@@ -221,6 +230,6 @@
     <script src="{% static 'js/tests.js' %}"></script>
     <script src="{% static 'js/settings.js' %}"></script>
     <script src="{% static 'js/about.js' %}"></script>
-    <script src="{% static 'js/profile.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script> 
 </body>
 </html>

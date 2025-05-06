@@ -76,14 +76,4 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.style.color = 'var(--primary-color)';
         });
     });
-    
-    // Add click handler for test buttons
-    const testButtons = document.querySelectorAll('.btn-outline.btn-sm');
-    testButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Test starting functionality would be implemented here!');
-            // In a real app, this would redirect to the test page
-        });
-    });
 });

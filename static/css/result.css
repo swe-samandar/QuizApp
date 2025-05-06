@@ -360,6 +360,27 @@
     flex-wrap: wrap;
 }
 
+.score-circle {
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+
+.score-percent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: #c9d1d9;
+}
+
+.progress-ring-circle-fill {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.5s ease, stroke 0.5s ease;
+}
+
 @media (max-width: 576px) {
     .result-actions {
         flex-direction: column;

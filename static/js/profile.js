@@ -112,14 +112,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run on load and resize
     setupResponsiveTable();
     window.addEventListener('resize', setupResponsiveTable);
-    
-    // Avatar edit functionality
-    const avatarEdit = document.querySelector('.avatar-edit');
-    if (avatarEdit) {
-        avatarEdit.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Avatar upload functionality would be implemented here!');
-            // In a real app, this would open a file upload dialog
-        });
-    }
 });

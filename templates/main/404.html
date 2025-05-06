@@ -6,11 +6,11 @@
     <main class="container">
         <section class="not-found glass-card">
             <div class="astronaut">
-                <img src="{% static 'assets/astronaut.svg' %}" alt="Astronaut">
+                <img src="{% static 'assets/default.png' %}" alt="TestLib Logo" style="margin-top: 10px; width: 350px; height: 350px; object-fit: cover; border-radius: 30%; border: 3px solid #13a9b7;">
             </div>
             <div class="not-found-content">
                 <h1>404</h1>
-                <h2>{% if error %} {{ error }} {% else %} Lost in Space {% endif %}</h2>
+                <h2>{% if error %} {{ error }} {% else %} Page Not Found {% endif %}</h2>
                 <p>The page you're looking for doesn't exist or has been moved. Let's get you back home!</p>
                 <div class="not-found-actions">
                     <a href="{% url 'main:index' %}" class="btn btn-primary">

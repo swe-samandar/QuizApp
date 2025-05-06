@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestLib | Kategoriyalarni Boshqarish</title>    
+    <link rel="icon" type="image/png" href="{% static 'assets/brain_logo.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/manage_category.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">Kategoriyalarni Boshqarish</h1>
+            <div style="display: flex;">
+                <a href="{% url 'main:index' %}" class="add-category-btn" style="text-decoration: none; margin-right: 5px;">
+                    <i class="fas fa-home"></i>
+                    Bosh sahifa
+                </a>
+                <a href="{% url 'main:new_category' %}" class="add-category-btn" style="text-decoration: none;">
+                    <i class="fas fa-plus"></i>
+                    Yangi Kategoriya
+                </a>
+            </div>
+        </div>
+        
+        <div class="categories-table">
+            <div class="table-header">
+                <div>Kategoriya Nomi</div>
+                <div>Testlar Soni</div>
+                <div>Boshqaruv</div>
+            </div>
+            
+            <!-- Kategoriyalar ro'yxati -->
+            {% if categories.exists %}
+                {% for ctg in categories %}
+                    <div class="category-item">
+                        <div class="category-name">{{ ctg.name }}</div>
+                        <div>{{ ctg.tests.count }}</div>
+                        <div class="category-actions">
+                            <a href="{% url 'main:update_category' ctg.id %}" class="edit-btn" style="text-decoration: none;">
+                                <i class="fas fa-edit"></i>
+                                Tahrirlash
+                            </a>
+                            <a href="{% url 'main:delete_category' ctg.id %}" class="delete-btn" style="text-decoration: none;">
+                                <i class="fas fa-trash"></i>
+                                O'chirish
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Agar kategoriyalar bo'lmasa -->
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>Kategoriyalar Topilmadi</h3>
+                    <p>Kategoriya qo'shish uchun yuqoridagi tugmadan foydalaning</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

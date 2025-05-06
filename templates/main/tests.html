@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load duration_filters %}
 {% block title %} Test Library {% endblock title %}
 
 {% block content %}
+<style>
+    .btn-save-test.saved {
+        color: #fff;
+        background-color: #13a9b7;
+        border-color: #13a9b7;
+    }
+</style>
     <main class="container">
         <section class="tests-header">
             <h1>Test Library</h1>
@@ -82,22 +90,54 @@
                             <p class="test-description">{{ test.description }}</p>
                             <div class="test-stats">
                                 <span><i class="fas fa-question-circle"></i> {{ test.question_count }} Questions</span>
-                                <span><i class="fas fa-clock"></i> 15 Min</span>
+                                <span><i class="fas fa-clock"></i>{{ test.duration|duration_in_minutes }} daqiqa</span>
                             </div>
                             <div class="test-actions">
                                 <a href="{% url 'main:ready_to_test' test.id %}"><button class="btn btn-primary btn-sm">Start Test</button></a>
-                                <button class="btn btn-outline btn-sm">
-                                    <i class="far fa-bookmark"></i>
+                                <button class="btn btn-outline btn-sm btn-save-test {% if test.id in saved_tests %}saved{% endif %}" data-test-id="{{ test.id }}">
+                                    {% if test.id in saved_tests %}
+                                        <i class="fas fa-bookmark "></i>
+                                    {% else %}
+                                        <i class="far fa-bookmark "></i>
+                                    {% endif %}
                                 </button>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            
-            <div class="load-more">
+            <!-- <div class="load-more">
                 <button class="btn btn-outline">Load More Tests</button>
-            </div>
+            </div> -->
         </section>
     </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".btn-save-test").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                const testId = this.dataset.testId;
+                const button = this;
+
+                fetch("{% url 'main:toggle_saved_test' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `test_id=${testId}`,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "saved") {
+                        button.classList.add("saved");
+                        button.innerHTML = `<i class="fas fa-bookmark"></i>`;
+                    } else {
+                        button.classList.remove("saved");
+                        button.innerHTML = `<i class="far fa-bookmark"></i>`;
+                    }
+                });
+            });
+        });
+    });
+</script>
 {% endblock content %}

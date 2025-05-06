@@ -127,6 +127,7 @@ class SavedTest(models.Model):
     user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
     test = models.ForeignKey(to=Test, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True )
 
     class Meta:
         verbose_name = 'saved test'

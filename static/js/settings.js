@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const changePasswordBtn = document.getElementById('change-password');
     if (changePasswordBtn) {
         changePasswordBtn.addEventListener('click', function() {
-            alert("Parolni o'zgartirish oynasi ochiladi!");
+            // alert("Parolni o'zgartirish oynasi ochiladi!");
             // Haqiqiy loyihada bu modal oynani ochadi
         });
     }
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (settingsForm) {
         settingsForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            alert("Hisob ma'lumotlari muvaffaqiyatli yangilandi!");
+            // alert("Hisob ma'lumotlari muvaffaqiyatli yangilandi!");
             // Haqiqiy loyihada bu ma'lumotlarni saqlash uchun API ga so'rov yuboriladi
         });
     }

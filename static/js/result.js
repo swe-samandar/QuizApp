@@ -70,3 +70,31 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', animateMetricBars);
     animateMetricBars(); // Run once on page load
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const circles = document.querySelectorAll(".score-circle");
+
+    circles.forEach(circle => {
+        const percent = parseInt(circle.dataset.percentage);
+        const radius = 70;
+        const circumference = 2 * Math.PI * radius;
+
+        const progress = circle.querySelector(".progress-ring-circle-fill");
+
+        progress.setAttribute("stroke-dasharray", circumference.toString());
+        const offset = circumference * (1 - percent / 100);
+        progress.setAttribute("stroke-dashoffset", offset.toString());
+
+        // RANG TANLASH
+        let strokeColor;
+        if (percent < 50) {
+            strokeColor = "#e74c3c"; // red
+        } else if (percent < 75) {
+            strokeColor = "#f1c40f"; // yellow
+        } else {
+            strokeColor = "#2ecc71"; // green
+        }
+
+        progress.setAttribute("stroke", strokeColor);
+    });
+});

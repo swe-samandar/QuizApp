@@ -1,0 +1,71 @@
+{% load static %}
+{% load duration_filters %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestLib | Testlarni Boshqarish</title>
+    <link rel="icon" type="image/png" href="{% static 'assets/brain_logo.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/manage_tests.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">Testlarni Boshqarish</h1>
+            <div style="display: flex;">
+                <a href="{% url 'main:index' %}" class="add-btn" style="text-decoration: none; margin-right: 5px;">
+                    <i class="fas fa-home"></i>
+                    Bosh sahifa
+                </a>
+                <a href="{% url 'main:new_test' %}" class="add-btn" style="text-decoration: none;">
+                    <i class="fas fa-plus"></i>
+                    Yangi Test
+                </a>
+            </div>
+        </div>
+        
+        <div class="tests-table">
+            <div class="table-header">
+                <div>Test Nomi</div>
+                <div>Kategoriya</div>
+                <div>Savollar</div>
+                <div>Vaqt</div>
+                <div>Boshqaruv</div>
+            </div>
+            
+            <!-- Testlar ro'yxati -->
+            {% if tests.exists %}
+                {% for test in tests %}
+                    <div class="test-item">
+                        <div class="test-name">{{ test.title }}</div>
+                        <div><span class="test-category">{{ test.category.name }}</span></div>
+                        <div>{{ test.question_count }}</div>
+                        <div>{{ test.duration|duration_in_minutes }} daqiqa</div>                      
+                        <div class="test-actions">
+                            <a class="action-btn questions-btn">
+                                <i class="fas fa-question-circle"></i>
+                                Savollar
+                            </a>
+                            <a class="action-btn edit-btn">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="action-btn delete-btn">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Agar testlar bo'lmasa -->
+                <div class="empty-state">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Testlar Topilmadi</h3>
+                    <p>Yangi test qo'shish uchun yuqoridagi tugmadan foydalaning</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

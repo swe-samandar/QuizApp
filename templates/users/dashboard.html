@@ -70,26 +70,44 @@
                     </div>
                 </div>
 
-                <div class="recent-tests glass-card">
-                    <h2>Recent Tests</h2>
-                    <div class="test-list">
-                        {% if completed_tests %}
-                            {% for test in completed_tests|slice:"0:3" %}
-                                <div class="test-item">
-                                    <div class="test-info">
-                                        <h4>{{ test.test.title }}</h4>
-                                        <p>Completed 2 days ago</p>
-                                    </div>
-                                    <div class="test-score">
-                                        <span class="score-badge">{{ test.percentage }}%</span>
-                                    </div>
+                <div class="results-table glass-card">
+                    {% if saved_tests %}
+                        <h3 style="margin-top: 2rem;">Saved Tests</h3>
+                        <div class="table-header" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; background: #f0f9ff; padding: 0.75rem 1rem; border-radius: 8px; font-weight: bold; font-size: 0.9rem; color: #444;">
+                            <div>Test</div>
+                            <div>Saved On</div>
+                            <div>Start</div>
+                            <div>Unsaved</div>
+                        </div>
+                
+                        {% for saved in saved_tests %}
+                            <div class="table-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: center; padding: 1rem; border-bottom: 1px solid #eee;">
+                                <div>
+                                    <h4 style="margin: 0; font-size: 1rem;">{{ saved.test.title }}</h4>
+                                    <p style="margin: 0; color: #888; font-size: 0.85rem;">{{ saved.test.category.name }}</p>
                                 </div>
-                            {% endfor %}
-                        {% else %}
-                            <h4>You haven't taken any tests yet.</h4>
-                        {% endif %}
-                    </div>
+                                <div>
+                                    <span style="font-size: 0.9rem; color: #666;">{{ saved.created_at|date:"M d, Y" }}</span>
+                                </div>
+                                <div>
+                                    <a href="{% url 'main:ready_to_test' saved.test.id %}">
+                                        <button class="btn btn-sm btn-primary">Start</button>
+                                    </a>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline remove-saved-btn" data-test-id="{{ saved.test.id }}">
+                                        <i class="fas fa-trash-alt"></i> Unsaved
+                                    </button>                                    
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div style="text-align: center; padding: 2rem;">
+                            <h4 style="color: #777;">You haven't saved any tests yet.</h4>
+                        </div>
+                    {% endif %}
                 </div>
+                
             </div>
 
             <div class="content-right">
@@ -131,4 +149,41 @@
             </div>
         </section>
     </main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".remove-saved-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                const testId = this.dataset.testId;
+                const row = this.closest(".table-row");
+
+                fetch("{% url 'users:toggle_saved_test' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `test_id=${testId}`,
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.status === "unsaved") {
+                        // Jadvaldan ushbu qatorni o'chiramiz
+                        row.remove();
+
+                        // Agar hech narsa qolmasa, "empty" xabarni ko‘rsatamiz
+                        if (document.querySelectorAll(".table-row").length === 0) {
+                            const container = document.querySelector(".results-table");
+                            container.innerHTML = `
+                                <div style="text-align: center; padding: 2rem;">
+                                    <h4 style="color: #777;">You haven't saved any tests yet.</h4>
+                                </div>`;
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+    
 {% endblock content %}

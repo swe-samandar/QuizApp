@@ -11,6 +11,7 @@ from .views import (
     ResetPasswordRequestView,
     VerifyCodeView,
     SetNewPasswordView,
+    ToggleSavedTestView
 )
 
 app_name = 'users'
@@ -27,4 +28,5 @@ urlpatterns = [
     path('reset-password', ResetPasswordRequestView.as_view(), name='reset_password'),
     path('verify-code', VerifyCodeView.as_view(), name='verify_code'),
     path('set-new-password', SetNewPasswordView.as_view(), name='set_new_password'),
+    path('toggle-saved-test/', ToggleSavedTestView.as_view(), name='toggle_saved_test')
 ]

@@ -1,10 +1,12 @@
 from django.utils import timezone
 from users.models import MedalChoices, CustomUser
 from main.models import CheckQuestion, CheckTest
-from django.core.mail import send_mail
 from core import settings
 from threading import Thread
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 import re
+
 
 def calculate_point(checktest):
     points = 0
@@ -87,11 +89,41 @@ REGEX_EMAIL = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 def is_valid_email(email: str) -> bool:
     return re.match(REGEX_EMAIL, email) is not None
 
+
 def send_code_via_email(user_email, code):
-    subject = "Password Reset Code"
-    message = f"Assalomu alaykum,\n\nSizning parolni tiklash kodingiz: {code}\n\nKod 5 daqiqa davomida amal qiladi."
+    subject = "🔐 Parolni tiklash kodingiz"
     from_email = settings.EMAIL_HOST_USER
-    send_mail(subject, message, from_email, [user_email], fail_silently=False)
+    to = [user_email]
+    
+    html_content = f"""
+    <html>
+    <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
+        <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <div style="text-align: center;">
+                <h1 style="margin-bottom: 10px;">🧠 TestLib</h1>
+                <h2 style="color: #333;">Parolni tiklash</h2>
+            </div>
+            <p style="font-size: 16px;">Assalomu alaykum,</p>
+            <p style="font-size: 16px;">Sizning <strong>parolni tiklash kodingiz</strong> quyidagicha:</p>
+            <div style="text-align: center; margin: 20px 0;">
+                <span style="display: inline-block; font-size: 28px; font-weight: bold; color: #2c3e50; padding: 10px 20px; border: 2px dashed #2c3e50; border-radius: 8px;">{code}</span>
+            </div>
+            <p style="font-size: 16px;">Kod <strong>5 daqiqa</strong> davomida amal qiladi.</p>
+            <hr style="margin: 30px 0;" />
+            <p style="font-size: 14px; color: #777;">Bu xat <strong>TestLib</strong> platformasi tomonidan yuborildi. Agar siz bu so‘rovni yubormagan bo‘lsangiz, iltimos, ushbu xatni e'tiborsiz qoldiring.</p>
+            <p style="font-size: 14px; color: #777;">🌐 <a href="https://testlib.uz" style="color: #007BFF; text-decoration: none;">testlib.uz</a></p>
+        </div>
+    </body>
+    </html>
+    """
+
+    # Fallback plain text
+    text_content = strip_tags(html_content)
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
 
 def send_with_thread(addresses, message):
     if isinstance(addresses, str):
